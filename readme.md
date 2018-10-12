@@ -50,6 +50,16 @@ Model-state saved by pytorch.
 
 <br>
 
-#### IV. To do
+IV. Result
+
+Some of the results are shown below. White regions are what we interested in.
+
+<img src='res/4.png'>
+
+<img src='res/13.png'>
+
+<br>
+
+#### V. To do
 
 Use larger dataset, for now, the size of feature map before GAP layer is only 8*8, and I resize it to 224\*224. There must be much loss of information during this process.

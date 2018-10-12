@@ -79,8 +79,6 @@ for batch, data in enumerate(trainloader, 0):
 			fea[j] = fea[j]*avg[j][0][0]	
 		sum_fea = torch.sum(fea, 0)		# sum the 256 feature maps	
 		sum_fea = (sum_fea*255/sum_fea.max()).long().numpy()
-		plt.imshow(sum_fea, cmap="jet")
-		plt.show()
 		sum_fea = np.tile(sum_fea, (3, 1, 1))
 		sum_fea = np.swapaxes(sum_fea, 0, 1)
 		sum_fea = np.swapaxes(sum_fea, 1, 2)
