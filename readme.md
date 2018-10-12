@@ -1,6 +1,6 @@
 #### I. Introduction
 
-Use pytorch 0.4.0 and python3 to implemennt CAM (class avtivation mapping).
+Use pytorch 0.4.0 and python3 to implemennt CAM (class avtivation mapping). Just a simple lab, acting on cifar-10 dataset.
 
 <a href='https://blog.csdn.net/weixin_40955254/article/details/81191896'>Click here for more</a>
 
@@ -36,7 +36,7 @@ Cifar-10 data set
 Run and save the result of CAM method.
 ```
 
-— train.ipynb — 
+— train.py  — 
 
 ```
 Train the net I defined with 20 epoches and SGD.

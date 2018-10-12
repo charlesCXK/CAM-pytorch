@@ -28,9 +28,7 @@ class mynet(nn.Module):
         self.features = self._make_layers(cfg)
         self.avgpool = nn.AvgPool2d(kernel_size=8, stride=1)
         self.linear = torch.nn.Sequential(
-            nn.Linear(256, 100),
-            nn.ReLU(),
-            nn.Linear(100, 10),
+            nn.Linear(256, 10),
         )
         
     def _make_layers(self, cfg):
@@ -57,7 +55,7 @@ net.to(device)
 # transform GPU model into CPU network
 net.load_state_dict(torch.load('params.pkl', map_location=lambda storage, loc: storage))
 
-
+# print(net.linear[0].state_dict()['weight'][0].shape)
 
 """ Load the train dataset """
 # 数据预处理，转化为 Tensor
@@ -73,12 +71,16 @@ for batch, data in enumerate(trainloader, 0):
 	for i in range(len(inputs)):
 		fea = features[i]
 		avg = avg_weight[i]
+		label = labels[i]
+		weight_info = net.linear[0].state_dict()['weight'][label]
+		weight_info += abs(weight_info.min())		# all add a bias, make all the weights >= 0
+
 		for j in range(256):
-			# print(fea[j].shape)
-			# print(avg[j][0][0])
-			fea[j] = fea[j]*avg[j][0][0]	
-		sum_fea = torch.sum(fea, 0)		# sum the 256 feature maps	
+			fea[j] = fea[j]*weight_info[j]	
+		sum_fea = torch.mean(fea, 0)		# sum the 256 feature maps	
 		sum_fea = (sum_fea*255/sum_fea.max()).long().numpy()
+		# plt.imshow(sum_fea, cmap="jet")
+		# plt.show()
 		sum_fea = np.tile(sum_fea, (3, 1, 1))
 		sum_fea = np.swapaxes(sum_fea, 0, 1)
 		sum_fea = np.swapaxes(sum_fea, 1, 2)
@@ -93,5 +95,5 @@ for batch, data in enumerate(trainloader, 0):
 		final_img = np.concatenate((raw_img, img), axis=1)
 		final_img = Image.fromarray(final_img.astype('uint8'))
 		final_img.save('res/{}.png'.format(i), 'PNG')
-		break
+		# break
 	break
